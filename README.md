@@ -1,6 +1,9 @@
 # Marbitec fna Processing
 Marbitec wants to process the setof fna files for having a complete picture of all complete genome structures
 
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FRolfEleveld%2Fsquealing-octo-rutabaga%2Fmaster%2Fazuredeploy.json)
+[![Visualize](http://armviz.io/visualizebutton.png)](http://armviz.io/#/?load=https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/azuredeploy.json)
+
 ## Intent
 To set up and crate an environmnt for processing the fna files using [MUMmer 3.23](http://mummer.sourceforge.net) or   
 [ncbi-blast-2.2.31+](ftp://ftp.ncbi.nih.gov/blast/) from the python [average_nucleotide_identity.py](https://github.com/widdowquinn/pyani) script with a possibility to run this script in a multi-processing scale out way.
