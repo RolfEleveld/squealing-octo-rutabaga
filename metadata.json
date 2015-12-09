@@ -1,0 +1,7 @@
+{
+  "itemDisplayName": "Create a NCBI BLAST+ compute machine",
+  "description": "This template creates an NCBI BLAST+ compute image extended with the scripts to run the FNA analysis.",
+  "summary": "Create a NCBI BLAST+ compute machine.",
+  "githubUsername": "rolfeleveld",
+  "dateUpdated": "2015-12-08"
+}
