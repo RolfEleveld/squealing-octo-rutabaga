@@ -29,7 +29,6 @@ sudo apt-get install pyparsing* -y
 sudo apt-get install tornado* -y
 sudo apt-get install cycler* -y
 
-
 sudo apt-get install python-pip -y
 sudo pip install json
 sudo pip install logging
@@ -51,17 +50,21 @@ sudo apt-get install r-base -y
 
 # using blast nci image
 ##blast 
-#wget ftp://ftp.ncbi.nih.gov/blast/executables/LATEST/ncbi-blast-2.2.31+-x64-linux.tar.gz
-#tar xzf ncbi-blast-2.2.31+-x64-linux.tar.gz
-#cd ncbi-blast-2.2.31+
-##stuck here ... using ready made image instead.
-#make
-#sudo make install
-#cd ..
+wget ftp://ftp.ncbi.nih.gov/blast/executables/LATEST/ncbi-blast-2.2.31+-x64-linux.tar.gz
+tar xzf ncbi-blast-2.2.31+-x64-linux.tar.gz
+cd ncbi-blast-2.2.31+
+# take the pwd and /bin and make that part of path
+export PATH = $PATH:$HOME/ncbi-blast-2.2.31+/bin
+export BLASTDB = $BLASTDB:$HOME/ncbi-blast-2.2.31+/db
 
 ## todo vvv reading ftp://ftp.ncbi.nih.gov/blast/documents/blast.html as blast is downloaded, not executing yet.
 ## todo MUMmer as well.
-#wget http://downloads.sourceforge.net/project/mummer/mummer/3.23/MUMmer3.23.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmummer%2Ffiles%2Fmummer%2F3.23%2F&ts=1448474975&use_mirror=heanet
+# look up wget man page on naming target.
+wget http://downloads.sourceforge.net/project/mummer/mummer/3.23/MUMmer3.23.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmummer%2Ffiles%2Fmummer%2F3.23%2F&ts=1448474975&use_mirror=heanet
+#tar xzf MUMmer3.23.tar.gz
+#cd MUMmer3.23
+## take the pwd and /bin and make that part of path
+#export PATH = $PATH:$HOME/MUMmer3.23
 
 #rpy2>=2.7.0 
 sudo pip install Rpy2
