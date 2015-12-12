@@ -26,8 +26,8 @@ for fha in listOfFiles:
 
     with open(f, "r") as fi:
         record = SeqIO.parse((fi),"fasta").next()
-        found = record.description.split("|,")
-        new='_'.join(found[1:2])
+        found = record.description.split("|",5).join("|").rsplit("|",2)
+        new = '_'.join(found
         print found
         ft=os.path.join(dst,new)
         print f
