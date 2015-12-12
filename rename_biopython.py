@@ -26,22 +26,22 @@ for fha in listOfFiles:
 
     with open(f, "r") as fi:
         record = SeqIO.parse((fi),"fasta").next()
-        found = record.description.split("|")
-        new='_'.join(found[4:5])
+        found = record.description.split("|,")
+        new='_'.join(found[1:2])
         print found
         ft=os.path.join(dst,new)
         print f
         print ft
         # remove/replace these  words
-        new= new.replace("Streptococcus","S.")
+        new= new.replace(" ","_")
+        new= new.replace("Streptococcus_","S._")
         new= new.replace("strain_","")
         new= new.replace("genome_assembly_","")
-        new= new.replace(",_complete","")
         new= new.replace("_complete_genome","")
-        new= new.replace(",_whole_genome","")
-        new= new.replace(",_whole","")
+        new= new.replace("_whole_genome","")
+        new= new.replace("_whole","")
+        new= new.replace("_complete","")
         new= new.replace(",","")
-        new= new.replace(" ","_")
         new= new.replace("/","")
         new= new + ".fasta"
         print new
