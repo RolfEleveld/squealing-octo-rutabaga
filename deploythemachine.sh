@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# expect 4 paramerters: $1 is the link to the storage share $2 is the user name $3 is the pass key for the cifs user and $4 the relative path to process
+# the script expects $1 to have research (with fna files) and compute to store the calculated results.
+
 #Deploy Python (should have python deployed):
 sudo apt-get update
 
@@ -37,46 +40,39 @@ sudo pip install ReportLab
 
 #biopython>=1.65 
 sudo pip install Biopython
+
 #matplotlib>=1.4.3 
-sudo apt-get install matplotlib* -y
 #numpy>=1.10.0.post2 
-sudo pip install NumPy
 #pandas>=0.17.0
-sudo pip install pandas
-sudo pip install SciPy
+#rpy2>=2.7.0 
+sudo apt-get install python-rpy2
+#scipy>=0.16.0 
+sudo apt-get install python-numpy python-scipy python-matplotlib* ipython ipython-notebook python-pandas python-sympy python-nose -y -q
+sudo apt-get install r-base -y
 sudo pip install ipython-genutils
 
-sudo apt-get install r-base -y
-
-# using blast nci image
 ##blast 
 wget ftp://ftp.ncbi.nih.gov/blast/executables/LATEST/ncbi-blast-2.2.31+-x64-linux.tar.gz
 tar xzf ncbi-blast-2.2.31+-x64-linux.tar.gz
-cd ncbi-blast-2.2.31+
 # take the pwd and /bin and make that part of path
 export PATH = $PATH:$HOME/ncbi-blast-2.2.31+/bin
 export BLASTDB = $BLASTDB:$HOME/ncbi-blast-2.2.31+/db
+# From ftp://ftp.ncbi.nih.gov/blast/documents/blast.html
 
-## todo vvv reading ftp://ftp.ncbi.nih.gov/blast/documents/blast.html as blast is downloaded, not executing yet.
-## todo MUMmer as well.
-# look up wget man page on naming target.
-wget http://downloads.sourceforge.net/project/mummer/mummer/3.23/MUMmer3.23.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmummer%2Ffiles%2Fmummer%2F3.23%2F&ts=1448474975&use_mirror=heanet
-#tar xzf MUMmer3.23.tar.gz
-#cd MUMmer3.23
-## take the pwd and /bin and make that part of path
-#export PATH = $PATH:$HOME/MUMmer3.23
-
-#rpy2>=2.7.0 
-sudo pip install Rpy2
-
-#scipy>=0.16.0 
-pip install git+https://github.com/scipy/scipy.git
+# MUMmer
+wget -O MUMmer3.23.tar.gz http://downloads.sourceforge.net/project/mummer/mummer/3.23/MUMmer3.23.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmummer%2Ffiles%2Fmummer%2F3.23%2F&ts=1448474975&use_mirror=heanet
+tar xzf MUMmer3.23.tar.gz
+cd MUMmer3.23
+make
+# take the pwd and /bin and make that part of path
+export PATH = $PATH:$HOME/MUMmer3.23
+cd ..
 
 #PyANI
-sudo pip install git+https://github.com/widdowquinn/pyani/releases
-
-#test
-./average_nucleotide_identity.py -i tests/test_ani_data/ -o tests/test_ANIb_output -m ANIb -g
+#https://github.com/widdowquinn/pyani
+sudo apt-get install r-base* -y
+sudo apt-get install r-base-dev* -y
+sudo pip install pyani
 
 # azure management to collect data
 sudo pip install azure-mgmt
@@ -88,5 +84,31 @@ sudo pip install azure-mgmt
 #blobxfer.py mystorageacct container0 mylocaldir --remoteresource 
 
 #connect the Azure storage for fna files
-sudo apt-get install cifs-utils
-#sudo mount -t cifs //myaccountname.file.core.windows.net/mysharename ./mymountpoint -o vers=3.0,username=myaccountname,password=StorageAccountKeyEndingIn==,dir_mode=0777,file_mode=0777
+sudo apt-get install cifs-utils -y
+sudo apt-get install apt-file -y
+sudo mkdir -p ./source
+#$1 is the SAMBA link to the share
+#$2 is the user name
+#$3 is the key to access the share
+sudo mount -t cifs $1 ./source/ -o vers=3.0,username=$2,password=$3,dir_mode=0777,fil
+
+#create an output folder in /mnt/compute
+time_stamp=$(date +%Y_%m_%d)
+compute_path="/mnt/compute/${time_stamp}"
+temp_path="/mnt/tmp/${time_stamp}"
+output_path="/mnt/result/${time_stamp}"
+result_path="$HOME/source/compute/${time_stamp}"
+
+sudo mkdir -p "${temp_path}"
+sudo mkdir -p "${compute_path}"
+
+#$4 contains the relative path to the FNA files to be processed e.g. "/research/*[7-9][7-9]*Velvet*"
+sudo cp ./source$4 ${temp_path} -R
+
+wget "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/rename_biopython.py"
+python rename_biopython.py -s "${temp_path}" -t "${compute_path}"
+
+sudo average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m ANIb -g
+
+sudo mkdir "${result_path}"
+sudo cp "${output_path}" "${result_path}" -R
