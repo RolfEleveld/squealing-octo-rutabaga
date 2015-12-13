@@ -26,12 +26,11 @@ for fha in listOfFiles:
 
     with open(f, "r") as fi:
         record = SeqIO.parse((fi),"fasta").next()
-        found = record.description.split("|",5).join("|").rsplit("|",2)
-        new = '_'.join(found
-        print found
-        ft=os.path.join(dst,new)
-        print f
-        print ft
+        # return the last 2 of the first five | separated items, if none exist return the original string
+        f5 = "|".join(record.description.split("|",5))
+        print f5
+        new = '_'.join(f5.rsplit("|",2))
+        print new
         # remove/replace these  words
         new= new.replace(" ","_")
         new= new.replace("Streptococcus_","S._")
@@ -44,6 +43,8 @@ for fha in listOfFiles:
         new= new.replace(",","")
         new= new.replace("/","")
         new= new + ".fasta"
-        print new
+        print ("header is: '%s' converted to '%s'" % record.description, new )
         fi.close()
+        ft=os.path.join(dst,new)
+        print ("rename: '%s' to '%s'" % f, ft )
         os.rename(f, ft)
