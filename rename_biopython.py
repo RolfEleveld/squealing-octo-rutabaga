@@ -43,8 +43,8 @@ for fha in listOfFiles:
         new= new.replace(",","")
         new= new.replace("/","")
         new= new + ".fasta"
-        print ("header is: '%s' converted to '%s'" % record.description, new )
+        print ("header is: '%s' converted to '%s'" % (record.description, new) )
         fi.close()
         ft=os.path.join(dst,new)
-        print ("rename: '%s' to '%s'" % f, ft )
+        print ("rename: '%s' to '%s'" % (f, ft) )
         os.rename(f, ft)
