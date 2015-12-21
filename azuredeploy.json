@@ -258,8 +258,7 @@
         "type": "CustomScriptForLinux",
         "typeHandlerVersion": "1.1",
         "settings": {
-          "fileUris": "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/deploythemachine.sh",
-          "commandToExecute": "[concat('deploythemachine.sh ', parameters('blobPath'), ' ' , parameters('blobUser'), ' ' ,parameters('blobFilesKey'), parameters('blobProcessPath'))]"
+          "commandToExecute": "[concat('wget -q https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/deploythemachine.sh -O -| bash /dev/stdin ', parameters('blobPath'), ' ' , parameters('blobUser'), ' ' ,parameters('blobFilesKey'), parameters('blobProcessPath'))]"
         },
         "protectedSettings": { }
       }

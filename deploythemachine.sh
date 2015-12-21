@@ -4,7 +4,7 @@
 # the script expects $1 to have research (with fna files) and compute to store the calculated results.
 
 #Deploy Python (should have python deployed):
-sudo apt-get update
+sudo apt-get update -y
 
 #dependencies
 sudo apt-get install python-dev -y
@@ -45,7 +45,7 @@ sudo pip install Biopython
 #numpy>=1.10.0.post2 
 #pandas>=0.17.0
 #rpy2>=2.7.0 
-sudo apt-get install python-rpy2
+sudo apt-get install python-rpy2 -y
 #scipy>=0.16.0 
 sudo apt-get install python-numpy python-scipy python-matplotlib* ipython ipython-notebook python-pandas python-sympy python-nose -y -q
 sudo apt-get install r-base -y
@@ -55,8 +55,8 @@ sudo pip install ipython-genutils
 wget ftp://ftp.ncbi.nih.gov/blast/executables/LATEST/ncbi-blast-2.2.31+-x64-linux.tar.gz
 tar xzf ncbi-blast-2.2.31+-x64-linux.tar.gz
 # take the pwd and /bin and make that part of path
-export PATH = $PATH:$HOME/ncbi-blast-2.2.31+/bin
-export BLASTDB = $BLASTDB:$HOME/ncbi-blast-2.2.31+/db
+export PATH=$PATH:$HOME/ncbi-blast-2.2.31+/bin
+export BLASTDB=$BLASTDB:$HOME/ncbi-blast-2.2.31+/db
 # From ftp://ftp.ncbi.nih.gov/blast/documents/blast.html
 
 # MUMmer
@@ -65,13 +65,13 @@ tar xzf MUMmer3.23.tar.gz
 cd MUMmer3.23
 make
 # take the pwd and /bin and make that part of path
-export PATH = $PATH:$HOME/MUMmer3.23
+export PATH=$PATH:$HOME/MUMmer3.23
 cd ..
 
 #PyANI
 #https://github.com/widdowquinn/pyani
-sudo apt-get install r-base* -y
-sudo apt-get install r-base-dev* -y
+sudo apt-get install r-base* -y -q
+sudo apt-get install r-base-dev* -y -q
 sudo pip install pyani
 
 # azure management to collect data
@@ -90,7 +90,7 @@ sudo mkdir -p ./source
 #$1 is the SAMBA link to the share
 #$2 is the user name
 #$3 is the key to access the share
-sudo mount -t cifs $1 ./source/ -o vers=3.0,username=$2,password=$3,dir_mode=0777,fil
+sudo mount -t cifs $1 ./source -o vers=3.0,username=$2,password=$3,dir_mode=0777,file_mode=0777
 
 #create an output folder in /mnt/compute
 time_stamp=$(date +%Y_%m_%d)
@@ -106,9 +106,10 @@ sudo mkdir -p "${compute_path}"
 sudo cp ./source$4 ${temp_path} -R
 
 wget "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/rename_biopython.py"
-python rename_biopython.py -s "${temp_path}" -t "${compute_path}"
+sudo python rename_biopython.py -s "${temp_path}" -t "${compute_path}"
 
-sudo average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m ANIb -g
+# deployed path of biopython
+sudo  /usr/local/bin/average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m ANIb -g
 
 sudo mkdir "${result_path}"
 sudo cp "${output_path}" "${result_path}" -R
