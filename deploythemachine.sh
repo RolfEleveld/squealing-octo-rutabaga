@@ -102,7 +102,7 @@ result_path="$HOME/source/compute/${time_stamp}"
 sudo mkdir -p "${temp_path}"
 sudo mkdir -p "${compute_path}"
 
-#$4 contains the relative path to the FNA files to be processed e.g. "/research/*[7-9][7-9]*Velvet*"
+#$4 contains the relative path to the FNA files to be processed e.g. "/research/*[7-9][7-9]*Velvet*" or "/research/*ASM*"
 sudo cp ./source$4 ${temp_path} -R
 
 wget "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/rename_biopython.py"

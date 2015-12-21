@@ -1,7 +1,7 @@
 {
-  "itemDisplayName": "Create a NCBI BLAST+ compute machine",
-  "description": "This template creates an NCBI BLAST+ compute image extended with the scripts to run the FNA analysis.",
-  "summary": "Create a NCBI BLAST+ compute machine.",
+  "itemDisplayName": "Create a NCBI BLAST+ and MUMmer compute machine that can run average_nucleotide_identity.py",
+  "description": "This template creates an NCBI BLAST+ and MUMmer compute image extended with the average_nucleotide_identity.py script to run the FNA analysis. The system has a custom script included for naming consistency of analisis of DNA segments. The input and output are gathered from CIFS shares.",
+  "summary": "Create a NCBI BLAST+ MUMmer compute machine.",
   "githubUsername": "rolfeleveld",
-  "dateUpdated": "2015-12-08"
+  "dateUpdated": "2015-12-21"
 }
