@@ -256,9 +256,12 @@
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
         "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.1",
+        "typeHandlerVersion": "1.2",
         "settings": {
-          "commandToExecute": "[concat('wget -q https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/deploythemachine.sh -O -| bash /dev/stdin ', parameters('blobPath'), ' ' , parameters('blobUser'), ' ' ,parameters('blobFilesKey'), parameters('blobProcessPath'))]"
+          "fileUris": [
+            "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/deploythemachine.sh"
+          ],
+          "commandToExecute": "[concat('sh deploythemachine.sh ', parameters('blobPath'), ' ' , parameters('blobUser'), ' ' ,parameters('blobFilesKey'), ' ', parameters('blobProcessPath'))]"
         },
         "protectedSettings": { }
       }

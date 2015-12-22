@@ -33,6 +33,7 @@ sudo apt-get install tornado* -y
 sudo apt-get install cycler* -y
 
 sudo apt-get install python-pip -y
+# available?
 sudo pip install json
 sudo pip install logging
 sudo pip install nose
@@ -70,9 +71,10 @@ cd ..
 
 #PyANI
 #https://github.com/widdowquinn/pyani
-sudo apt-get install r-base* -y -q
-sudo apt-get install r-base-dev* -y -q
-sudo pip install pyani
+# below pops a window to deploy web service ( do we need this package?)
+#sudo apt-get install r-base* -y -q
+#sudo apt-get install r-base-dev* -y -q
+#sudo pip install pyani
 
 # azure management to collect data
 sudo pip install azure-mgmt
@@ -110,6 +112,7 @@ sudo python rename_biopython.py -s "${temp_path}" -t "${compute_path}"
 
 # deployed path of biopython
 sudo  /usr/local/bin/average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m ANIb -g
+# if run with & one can see utilization with: top -bn2 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}'
 
 sudo mkdir "${result_path}"
 sudo cp "${output_path}" "${result_path}" -R
