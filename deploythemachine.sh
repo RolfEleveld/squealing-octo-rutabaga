@@ -72,9 +72,9 @@ cd ..
 #PyANI
 #https://github.com/widdowquinn/pyani
 # below pops a window to deploy web service ( do we need this package?)
-#sudo apt-get install r-base* -y -q
-#sudo apt-get install r-base-dev* -y -q
-#sudo pip install pyani
+sudo apt-get install r-base* -y -q
+sudo apt-get install r-base-dev* -y -q
+sudo yes | pip install pyani
 
 # azure management to collect data
 sudo pip install azure-mgmt
