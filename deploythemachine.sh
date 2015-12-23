@@ -114,5 +114,7 @@ sudo python rename_biopython.py -s "${temp_path}" -t "${compute_path}"
 sudo  /usr/local/bin/average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m ANIb -g
 # if run with & one can see utilization with: top -bn2 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}'
 
+sudo ls -l ${temp_path} > ${output_path}/filteredfilelist.txt
+sudo ls -l ${output_path} > ${output_path}/processedfilelist.txt
 sudo mkdir "${result_path}"
 sudo cp "${output_path}" "${result_path}" -R
