@@ -88,24 +88,24 @@ sudo pip install azure-mgmt
 #connect the Azure storage for fna files
 sudo apt-get install cifs-utils -y
 sudo apt-get install apt-file -y
-sudo mkdir -p ./source
+sudo mkdir -p /mnt/source
 #$1 is the SAMBA link to the share
 #$2 is the user name
 #$3 is the key to access the share
-sudo mount -t cifs $1 ./source -o vers=3.0,username=$2,password=$3,dir_mode=0777,file_mode=0777
+sudo mount -t cifs $1 /mnt/source -o vers=3.0,username=$2,password=$3,dir_mode=0777,file_mode=0777
 
 #create an output folder in /mnt/compute
 time_stamp=$(date +%Y_%m_%d)
 compute_path="/mnt/compute/${time_stamp}"
 temp_path="/mnt/tmp/${time_stamp}"
 output_path="/mnt/result/${time_stamp}"
-result_path="$HOME/source/compute/${time_stamp}"
+result_path="/mnt/source/compute/${time_stamp}"
 
 sudo mkdir -p "${temp_path}"
 sudo mkdir -p "${compute_path}"
 
 #$4 contains the relative path to the FNA files to be processed e.g. "/research/*[7-9][7-9]*Velvet*" or "/research/*ASM*"
-sudo cp ./source$4 ${temp_path} -R
+sudo cp /mnt/source$4 ${temp_path} -R
 
 wget "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/rename_biopython.py"
 sudo python rename_biopython.py -s "${temp_path}" -t "${compute_path}"
