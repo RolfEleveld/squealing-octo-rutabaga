@@ -52,38 +52,7 @@ sudo apt-get install python-numpy python-scipy python-matplotlib* ipython ipytho
 sudo apt-get install r-base -y
 sudo pip install ipython-genutils
 
-##blast
-# using apt-get:
-sudo apt-get install ncbi-blast+ -y
-#
-#sudo mkdir -p /mnt/work
-#sudo chmod 0777 /mnt/work
-#cd /mnt/work
-# using http://www.ncbi.nlm.nih.gov/books/NBK279690/
-# look at ftp://ftp.ncbi.nih.gov/blast/executables/LATEST/ for the latest version!
-#wget ftp://ftp.ncbi.nih.gov/blast/executables/blast+/2.3.0/ncbi-blast-2.3.0+-x64-linux.tar.gz
-#tar xzf ncbi-blast-2.3.0+-x64-linux.tar.gz
-# make a database directory
-#mkdir /mnt/work/ncbi-blast-2.3.0+/db
-# take the pwd and /bin and make that part of path
-#export PATH=$PATH:/mnt/work/ncbi-blast-2.3.0+/bin
-#export BLASTDB=$BLASTDB:/mnt/work/ncbi-blast-2.3.0+/db
-# From ftp://ftp.ncbi.nih.gov/blast/documents/blast.html
-
-# MUMmer
-# using apt-get
-sudo apt-get install MUMmer -y -q
-
-#cd /mnt/work
-#wget -O MUMmer3.23.tar.gz http://downloads.sourceforge.net/project/mummer/mummer/3.23/MUMmer3.23.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmummer%2Ffiles%2Fmummer%2F3.23%2F&ts=1448474975&use_mirror=heanet
-#tar xzf MUMmer3.23.tar.gz
-#cd MUMmer3.23
-#make
-# take the pwd and /bin and make that part of path
-#export PATH=$PATH:/mnt/work/MUMmer3.23
-
 #PyANI
-cd /mnt/work
 #https://github.com/widdowquinn/pyani
 # below pops a window to deploy web service ( do we need this package?)
 sudo apt-get install r-base* -y -q
@@ -92,6 +61,8 @@ sudo yes | pip install pyani
 
 # azure management to collect data
 sudo pip install azure-mgmt
+sudo apt-get install cifs-utils -y
+sudo apt-get install apt-file -y
 
 # will enable when done, either bloxfer or cifs to Azure.
 ##transferring files from the storage and processing them
@@ -99,12 +70,42 @@ sudo pip install azure-mgmt
 ##actual transfer, use saskey!
 #blobxfer.py mystorageacct container0 mylocaldir --remoteresource 
 
+# Shared working directory
+sudo mkdir -p /mnt/work
+sudo chmod 0777 /mnt/work
+cd /mnt/work
+
+##blast
+# using apt-get:
+# sudo apt-get install ncbi-blast+ -y
+#
+cd /mnt/work
+# using http://www.ncbi.nlm.nih.gov/books/NBK279690/
+# look at ftp://ftp.ncbi.nih.gov/blast/executables/LATEST/ for the latest version!
+wget ftp://ftp.ncbi.nih.gov/blast/executables/blast+/2.3.0/ncbi-blast-2.3.0+-x64-linux.tar.gz
+tar xzf ncbi-blast-2.3.0+-x64-linux.tar.gz
+# make a database directory
+mkdir /mnt/work/ncbi-blast-2.3.0+/db
+# take the pwd and /bin and make that part of path
+export PATH=$PATH:/mnt/work/ncbi-blast-2.3.0+/bin
+export BLASTDB=$BLASTDB:/mnt/work/ncbi-blast-2.3.0+/db
+# From ftp://ftp.ncbi.nih.gov/blast/documents/blast.html
+
+# MUMmer
+# using apt-get
+# sudo apt-get install MUMmer -y -q
+cd /mnt/work
+wget -O MUMmer3.23.tar.gz http://downloads.sourceforge.net/project/mummer/mummer/3.23/MUMmer3.23.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmummer%2Ffiles%2Fmummer%2F3.23%2F&ts=1448474975&use_mirror=heanet
+tar xzf MUMmer3.23.tar.gz
+cd MUMmer3.23
+make
+# take the pwd and /bin and make that part of path
+export PATH=$PATH:/mnt/work/MUMmer3.23
+
+
 #connect the Azure storage for fna files
-sudo apt-get install cifs-utils -y
-sudo apt-get install apt-file -y
 sudo mkdir -p /mnt/source
 sudo chmod 0777 /mnt/source
-
 #$1 is the SAMBA link to the share
 #$2 is the user name
 #$3 is the key to access the share
@@ -133,10 +134,10 @@ ls -l ${temp_path} > /mnt/work/sourcefilteredfileslist.txt
 
 ##renaming
 # skipping now
-# wget "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/rename_biopython.py"
-#sudo python rename_biopython.py -s "${temp_path}" -t "${compute_path}"
+wget "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/rename_biopython.py"
+sudo python rename_biopython.py -s "${temp_path}" -t "${compute_path}"
 # copying instead
-cp $temp_path/* $compute_path
+#cp $temp_path/* $compute_path
 
 # deployed path of biopython
 /usr/local/bin/average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m ANIb -g > /mnt/work/processing_data.txt
