@@ -52,24 +52,32 @@ sudo apt-get install python-numpy python-scipy python-matplotlib* ipython ipytho
 sudo apt-get install r-base -y
 sudo pip install ipython-genutils
 
-##blast 
-wget ftp://ftp.ncbi.nih.gov/blast/executables/LATEST/ncbi-blast-2.2.31+-x64-linux.tar.gz
-tar xzf ncbi-blast-2.2.31+-x64-linux.tar.gz
+##blast
+sudo mkdir -p /mnt/work
+sudo chmod 0777 /mnt/work
+cd /mnt/work
+# using http://www.ncbi.nlm.nih.gov/books/NBK279690/
+# look at ftp://ftp.ncbi.nih.gov/blast/executables/LATEST/ for the latest version!
+wget ftp://ftp.ncbi.nih.gov/blast/executables/blast+/2.3.0/ncbi-blast-2.3.0+-x64-linux.tar.gz
+tar xzf ncbi-blast-2.3.0+-x64-linux.tar.gz
+# make a database directory
+mkdir /mnt/work/ncbi-blast-2.3.0+/db
 # take the pwd and /bin and make that part of path
-export PATH=$PATH:$HOME/ncbi-blast-2.2.31+/bin
-export BLASTDB=$BLASTDB:$HOME/ncbi-blast-2.2.31+/db
+export PATH=$PATH:/mnt/work/ncbi-blast-2.3.0+/bin
+export BLASTDB=$BLASTDB:/mnt/work/ncbi-blast-2.3.0+/db
 # From ftp://ftp.ncbi.nih.gov/blast/documents/blast.html
 
 # MUMmer
+cd /mnt/work
 wget -O MUMmer3.23.tar.gz http://downloads.sourceforge.net/project/mummer/mummer/3.23/MUMmer3.23.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmummer%2Ffiles%2Fmummer%2F3.23%2F&ts=1448474975&use_mirror=heanet
 tar xzf MUMmer3.23.tar.gz
 cd MUMmer3.23
 make
 # take the pwd and /bin and make that part of path
-export PATH=$PATH:$HOME/MUMmer3.23
-cd ..
+export PATH=$PATH:/mnt/work/MUMmer3.23
 
 #PyANI
+cd /mnt/work
 #https://github.com/widdowquinn/pyani
 # below pops a window to deploy web service ( do we need this package?)
 sudo apt-get install r-base* -y -q
@@ -89,12 +97,19 @@ sudo pip install azure-mgmt
 sudo apt-get install cifs-utils -y
 sudo apt-get install apt-file -y
 sudo mkdir -p /mnt/source
+sudo chmod 0777 /mnt/source
+
 #$1 is the SAMBA link to the share
 #$2 is the user name
 #$3 is the key to access the share
 sudo mount -t cifs $1 /mnt/source -o vers=3.0,username=$2,password=$3,dir_mode=0777,file_mode=0777
 
 #create an output folder in /mnt/compute
+sudo mkdir -p /mnt/compute
+sudo chmod 0777 /mnt/compute
+sudo mkdir -p /mnt/result
+sudo chmod 0777 /mnt/result
+
 time_stamp=$(date +%Y_%m_%d)
 compute_path="/mnt/compute/${time_stamp}"
 temp_path="/mnt/tmp/${time_stamp}"
@@ -102,19 +117,31 @@ output_path="/mnt/result/${time_stamp}"
 result_path="/mnt/source/compute/${time_stamp}"
 
 sudo mkdir -p "${temp_path}"
+sudo chmod 777 "${temp_path}"
 sudo mkdir -p "${compute_path}"
+sudo chmod 777 "${compute_path}"
 
 #$4 contains the relative path to the FNA files to be processed e.g. "/research/*[7-9][7-9]*Velvet*" or "/research/*ASM*"
-sudo cp /mnt/source$4 ${temp_path} -R
+cp /mnt/source$4 ${temp_path} -R
+ls -l ${temp_path} > /mnt/work/sourcefilteredfileslist.txt
 
-wget "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/rename_biopython.py"
-sudo python rename_biopython.py -s "${temp_path}" -t "${compute_path}"
+##renaming
+# skipping now
+# wget "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/rename_biopython.py"
+#sudo python rename_biopython.py -s "${temp_path}" -t "${compute_path}"
+# copying instead
+cp $temp_path/* $compute_path
 
 # deployed path of biopython
-sudo  /usr/local/bin/average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m ANIb -g
+/usr/local/bin/average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m ANIb -g > /mnt/work/processing_data.txt
 # if run with & one can see utilization with: top -bn2 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}'
 
-sudo ls -l ${temp_path} > ${output_path}/filteredfilelist.txt
-sudo ls -l ${output_path} > ${output_path}/processedfilelist.txt
+# aggregating all files
+ls -l ${output_path} > ${output_path}/processedfilelist.txt
+cp /mnt/work/sourcefilteredfileslist.txt ${output_path}
+cp /mnt/work/processing_data.txt ${output_path}
+
+# creating and copying results
 sudo mkdir "${result_path}"
+sudo chmod 777 "${result_path}"
 sudo cp "${output_path}" "${result_path}" -R
