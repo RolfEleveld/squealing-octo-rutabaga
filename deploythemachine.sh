@@ -77,7 +77,7 @@ cd /mnt/work
 
 ##blast
 # using apt-get:
-# sudo apt-get install ncbi-blast+ -y
+# sudo yes | apt-get install ncbi-blast+ -y
 #
 cd /mnt/work
 # using http://www.ncbi.nlm.nih.gov/books/NBK279690/
@@ -93,7 +93,7 @@ export BLASTDB=$BLASTDB:/mnt/work/ncbi-blast-2.3.0+/db
 
 # MUMmer
 # using apt-get
-# sudo apt-get install MUMmer -y -q
+# sudo yes | apt-get install MUMmer -y -q
 cd /mnt/work
 wget -O MUMmer3.23.tar.gz http://downloads.sourceforge.net/project/mummer/mummer/3.23/MUMmer3.23.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmummer%2Ffiles%2Fmummer%2F3.23%2F&ts=1448474975&use_mirror=heanet
 tar xzf MUMmer3.23.tar.gz
