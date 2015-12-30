@@ -125,8 +125,15 @@ result_path="/mnt/source/compute"
 sudo mkdir -p "${compute_path}"
 sudo chmod 777 "${compute_path}"
 
-#$4 contains the relative path to the FNA files to be processed e.g. "/research/S.thermophilus*" or "/research/S.suis_Velvet*"
-cp /mnt/source$4 ${compute_path} -R
+#$4 contains the relative path to the FNA files to be processed e.g. "/research/S.thermophilus*" or "/research/S.suis_Velvet*" or it can contain a link to a text file that contains the specific files.
+if [[ $4 == http* ]]
+then
+	# must be a file list
+	wget -O /mnt/work/filelist.txt $4
+	rsync -avz --include-from /mnt/work/filelist.txt /mnt/source ${compute_path}
+else
+	cp /mnt/source$4 ${compute_path} -R
+fi
 ls -l ${compute_path} > /mnt/work/sourcefilteredfileslist.txt
 
 # deployed path of biopython
