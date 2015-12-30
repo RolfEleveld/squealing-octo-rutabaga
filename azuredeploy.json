@@ -28,9 +28,9 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_GS1",
+      "defaultValue": "Standard_GS4",
       "metadata": {
-        "description": "VM size"
+        "description": "VM size, suggested is to choose GS4. There wil be N(N-1) files created in the temp folder, with 1000 fasta sources this is around 124 compute hours on 16 cores and around generate 999000 difference files for a total of 300GB data volume."
       },
       "allowedValues": [
         "Standard_A0",

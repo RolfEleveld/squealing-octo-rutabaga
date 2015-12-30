@@ -119,25 +119,15 @@ sudo chmod 0777 /mnt/result
 
 time_stamp=$(date +%Y_%m_%d)
 compute_path="/mnt/compute/${time_stamp}"
-temp_path="/mnt/tmp/${time_stamp}"
 output_path="/mnt/result/${time_stamp}"
-result_path="/mnt/source/compute/${time_stamp}"
+result_path="/mnt/source/compute"
 
-sudo mkdir -p "${temp_path}"
-sudo chmod 777 "${temp_path}"
 sudo mkdir -p "${compute_path}"
 sudo chmod 777 "${compute_path}"
 
-#$4 contains the relative path to the FNA files to be processed e.g. "/research/*[7-9][7-9]*Velvet*" or "/research/*ASM*"
-cp /mnt/source$4 ${temp_path} -R
-ls -l ${temp_path} > /mnt/work/sourcefilteredfileslist.txt
-
-##renaming
-# skipping now
-wget "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/rename_biopython.py"
-sudo python rename_biopython.py -s "${temp_path}" -t "${compute_path}"
-# copying instead
-#cp $temp_path/* $compute_path
+#$4 contains the relative path to the FNA files to be processed e.g. "/research/S.thermophilus*" or "/research/S.suis_Velvet*"
+cp /mnt/source$4 ${compute_path} -R
+ls -l ${compute_path} > /mnt/work/sourcefilteredfileslist.txt
 
 # deployed path of biopython
 /usr/local/bin/average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m ANIb -g > /mnt/work/processing_data.txt
@@ -148,7 +138,7 @@ ls -l ${output_path} > ${output_path}/processedfilelist.txt
 cp /mnt/work/sourcefilteredfileslist.txt ${output_path}
 cp /mnt/work/processing_data.txt ${output_path}
 
-# creating and copying results
+# creating and copying results do not carry forward blast_tab and dataframe files
 sudo mkdir "${result_path}"
 sudo chmod 777 "${result_path}"
-sudo cp "${output_path}" "${result_path}" -R
+rsync -avz --exclude '*.blast_tab' --exclude '*.dataframe' "${output_path}" "${result_path}"
