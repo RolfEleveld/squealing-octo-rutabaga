@@ -83,7 +83,7 @@ cd /mnt/work
 # using http://www.ncbi.nlm.nih.gov/books/NBK279690/
 # look at ftp://ftp.ncbi.nih.gov/blast/executables/LATEST/ for the latest version!
 wget ftp://ftp.ncbi.nih.gov/blast/executables/blast+/2.3.0/ncbi-blast-2.3.0+-x64-linux.tar.gz
-tar xzf ncbi-blast-2.3.0+-x64-linux.tar.gz
+tar -xvzf ncbi-blast-2.3.0+-x64-linux.tar.gz
 # make a database directory
 mkdir /mnt/work/ncbi-blast-2.3.0+/db
 # take the pwd and /bin and make that part of path
@@ -96,7 +96,7 @@ export BLASTDB=$BLASTDB:/mnt/work/ncbi-blast-2.3.0+/db
 # sudo yes | apt-get install MUMmer -y -q
 cd /mnt/work
 wget -O MUMmer3.23.tar.gz http://downloads.sourceforge.net/project/mummer/mummer/3.23/MUMmer3.23.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmummer%2Ffiles%2Fmummer%2F3.23%2F&ts=1448474975&use_mirror=heanet
-tar xzf MUMmer3.23.tar.gz
+tar -xvzf MUMmer3.23.tar.gz
 cd MUMmer3.23
 make
 # take the pwd and /bin and make that part of path
