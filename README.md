@@ -8,7 +8,7 @@ When the ARM is deployed using the button below then the Dashboard will request 
 
 ## Intent
 To set up and crate an environmnt for processing the fna files using [MUMmer 3.23](http://mummer.sourceforge.net) or   
-[ncbi-blast-2.3+](ftp://ftp.ncbi.nih.gov/blast/) from the python [average_nucleotide_identity.py](https://github.com/widdowquinn/pyani) script with a possibility to run this script in a multi-processing scale out way.
+[ncbi-blast-2.3+](http://www.ncbi.nlm.nih.gov/books/NBK279690/) from the python [average_nucleotide_identity.py](https://github.com/widdowquinn/pyani) script with a possibility to run this script in a multi-processing scale out way.
 
 ## Reference
 TBA
