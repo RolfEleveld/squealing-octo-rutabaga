@@ -130,7 +130,7 @@ if [[ $4 == http* ]]
 then
 	# must be a file list
 	wget -O /mnt/work/filelist.txt $4
-	rsync -avz --include-from /mnt/work/filelist.txt /mnt/source ${compute_path}
+	rsync -v --files-from /mnt/work/filelist.txt /mnt/source/research ${compute_path}
 else
 	cp /mnt/source$4 ${compute_path} -R
 fi
@@ -148,4 +148,4 @@ cp /mnt/work/processing_data.txt ${output_path}
 # creating and copying results do not carry forward blast_tab and dataframe files
 sudo mkdir "${result_path}"
 sudo chmod 777 "${result_path}"
-rsync -avz --exclude '*.blast_tab' --exclude '*.dataframe' "${output_path}" "${result_path}"
+rsync -v --exclude '*.blast_tab' --exclude '*.dataframe' "${output_path}" "${result_path}"
