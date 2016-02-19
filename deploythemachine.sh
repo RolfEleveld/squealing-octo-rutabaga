@@ -134,15 +134,16 @@ for f in `cat /mnt/work/filelist.txt`; do cp -n /mnt/source/$f ${compute_path}; 
 # document what is processed
 ls -l ${compute_path} > /mnt/work/sourcefilteredfileslist.txt
 
-# deployed path of biopython
-/usr/local/bin/average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m ANIb -g
+# deployed path of biopython, $5 is either ANIb or ANIm
+/usr/local/bin/average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m $5 -g
 # if run with & one can see utilization with: top -bn2 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}'
 
 # aggregating all files
 ls -l ${output_path} > ${output_path}/processedfilelist.txt
 cp /mnt/work/sourcefilteredfileslist.txt ${output_path}
+cp /mnt/processingInfo.log ${output_path}
 
 # creating and copying results do not carry forward blast_tab and dataframe files
 sudo mkdir -p "${result_path}"
 sudo chmod 777 "${result_path}"
-rsync -v --exclude '*.blast_tab' --exclude '*.dataframe' "${output_path}" "${result_path}"
+rsync -v --exclude '*.blast_tab' --exclude '*.dataframe' --exclude '*.delta' --exclude '*.mgaps' --exclude '*.ntref' "${output_path}" "${result_path}"

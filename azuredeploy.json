@@ -117,7 +117,18 @@
         "description": "The link to a text file listing each item to process with a relative path to the cifs storage."
       },
       "type": "string"
-    }
+    },
+    "processingAlgorythm": {
+      "type": "string",
+      "defaultValue": "ANIb",
+      "metadata": {
+        "description": "The algorythm to use for processing ANIb is for Blast+ ans ANIm is for MUMmer."
+      },
+      "allowedValues": [
+        "ANIb",
+        "ANIm"
+      ]
+    }    
   },
   "variables": {
     "virtualNetworkName": "vnet-vmaccess",
@@ -270,7 +281,7 @@
           "fileUris": [
             "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/deploythemachine.sh"
           ],
-          "commandToExecute": "[concat('sh deploythemachine.sh ', parameters('blobPath'), ' ' , parameters('blobUser'), ' ' ,parameters('blobFilesKey'), ' ', parameters('blobProcessPath'))]"
+          "commandToExecute": "[concat('nohup sh deploythemachine.sh ', parameters('blobPath'), ' ' , parameters('blobUser'), ' ' ,parameters('blobFilesKey'), ' ', parameters('blobProcessPath'), ' ', parameters('processingAlgorythm'), '> /mnt/processingInfo.log &')]"
         },
         "protectedSettings": { }
       }
