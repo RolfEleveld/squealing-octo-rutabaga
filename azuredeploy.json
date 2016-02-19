@@ -118,11 +118,11 @@
       },
       "type": "string"
     },
-    "processingAlgorythm": {
+    "processingAlgorithm": {
       "type": "string",
       "defaultValue": "ANIb",
       "metadata": {
-        "description": "The algorythm to use for processing ANIb is for Blast+ ans ANIm is for MUMmer."
+        "description": "The algorithm to use for processing ANIb is for Blast+ ans ANIm is for MUMmer."
       },
       "allowedValues": [
         "ANIb",
@@ -281,7 +281,7 @@
           "fileUris": [
             "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/deploythemachine.sh"
           ],
-          "commandToExecute": "[concat('nohup sh deploythemachine.sh ', parameters('blobPath'), ' ' , parameters('blobUser'), ' ' ,parameters('blobFilesKey'), ' ', parameters('blobProcessPath'), ' ', parameters('processingAlgorythm'), '> /mnt/processingInfo.log &')]"
+          "commandToExecute": "[concat('nohup sh deploythemachine.sh ', parameters('blobPath'), ' ' , parameters('blobUser'), ' ' ,parameters('blobFilesKey'), ' ', parameters('blobProcessPath'), ' ', parameters('processingAlgorithm'), '> /mnt/processingInfo.log &')]"
         },
         "protectedSettings": { }
       }
