@@ -125,25 +125,22 @@ result_path="/mnt/source/compute"
 sudo mkdir -p "${compute_path}"
 sudo chmod 777 "${compute_path}"
 
-#$4 contains the relative path to the FNA files to be processed e.g. "/research/S.thermophilus*" or "/research/S.suis_Velvet*" or it can contain a link to a text file that contains the specific files.
-if [[ $4 == http* ]]
-then
-	# must be a file list
-	wget -O /mnt/work/filelist.txt $4
-	rsync -v --files-from /mnt/work/filelist.txt /mnt/source/research ${compute_path}
-else
-	cp /mnt/source$4 ${compute_path} -R
-fi
+#$4 contains the URL to a text file that contains the specific FNA files to be processed relative to the cifs storage
+wget -O /mnt/work/filelist.txt $4
+
+# this creates a flat structure of all source files
+for f in `cat /mnt/work/filelist.txt`; do cp $f ${compute_path}; done
+
+# document what is processed
 ls -l ${compute_path} > /mnt/work/sourcefilteredfileslist.txt
 
 # deployed path of biopython
-/usr/local/bin/average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m ANIb -g > /mnt/work/processing_data.txt
+/usr/local/bin/average_nucleotide_identity.py -i "${compute_path}" -o "${output_path}" -m ANIb -g
 # if run with & one can see utilization with: top -bn2 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}'
 
 # aggregating all files
 ls -l ${output_path} > ${output_path}/processedfilelist.txt
 cp /mnt/work/sourcefilteredfileslist.txt ${output_path}
-cp /mnt/work/processing_data.txt ${output_path}
 
 # creating and copying results do not carry forward blast_tab and dataframe files
 sudo mkdir "${result_path}"

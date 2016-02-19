@@ -114,7 +114,7 @@
     },
     "blobProcessPath": {
       "metadata": {
-        "description": "The relative path in the cifs share to process e.g. /research/*[7-9][7-9]*Velvet*. This can also contain a link to a text file listing each item to process relative to the cifs storage."
+        "description": "The link to a text file listing each item to process with a relative path to the cifs storage."
       },
       "type": "string"
     }
