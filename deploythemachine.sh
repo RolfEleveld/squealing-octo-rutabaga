@@ -129,7 +129,7 @@ sudo chmod 777 "${compute_path}"
 wget -O /mnt/work/filelist.txt $4
 
 # this creates a flat structure of all source files
-for f in `cat /mnt/work/filelist.txt`; do cp $f ${compute_path}; done
+for f in `cat /mnt/work/filelist.txt`; do cp -n /mnt/source/$f ${compute_path}; done
 
 # document what is processed
 ls -l ${compute_path} > /mnt/work/sourcefilteredfileslist.txt
@@ -143,6 +143,6 @@ ls -l ${output_path} > ${output_path}/processedfilelist.txt
 cp /mnt/work/sourcefilteredfileslist.txt ${output_path}
 
 # creating and copying results do not carry forward blast_tab and dataframe files
-sudo mkdir "${result_path}"
+sudo mkdir -p "${result_path}"
 sudo chmod 777 "${result_path}"
 rsync -v --exclude '*.blast_tab' --exclude '*.dataframe' "${output_path}" "${result_path}"
