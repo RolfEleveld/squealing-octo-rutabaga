@@ -281,7 +281,7 @@
           "fileUris": [
             "https://raw.githubusercontent.com/RolfEleveld/squealing-octo-rutabaga/master/deploythemachine.sh"
           ],
-          "commandToExecute": "[concat('nohup sh deploythemachine.sh ', parameters('blobPath'), ' ' , parameters('blobUser'), ' ' ,parameters('blobFilesKey'), ' ', parameters('blobProcessPath'), ' ', parameters('processingAlgorithm'), '> /mnt/processingInfo.log &')]"
+          "commandToExecute": "[concat('nohup sh deploythemachine.sh ', parameters('blobPath'), ' ' , parameters('blobUser'), ' ' ,parameters('blobFilesKey'), ' ', parameters('blobProcessPath'), ' ', parameters('processingAlgorithm'), ' > /mnt/processingInfo.log &')]"
         },
         "protectedSettings": { }
       }
