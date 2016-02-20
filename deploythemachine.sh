@@ -85,7 +85,7 @@ cd /mnt/work
 wget ftp://ftp.ncbi.nih.gov/blast/executables/blast+/2.3.0/ncbi-blast-2.3.0+-x64-linux.tar.gz
 tar -xvzf ncbi-blast-2.3.0+-x64-linux.tar.gz
 # make a database directory
-mkdir /mnt/work/ncbi-blast-2.3.0+/db
+mkdir -p /mnt/work/ncbi-blast-2.3.0+/db
 # take the pwd and /bin and make that part of path
 export PATH=$PATH:/mnt/work/ncbi-blast-2.3.0+/bin
 export BLASTDB=$BLASTDB:/mnt/work/ncbi-blast-2.3.0+/db
@@ -141,9 +141,9 @@ ls -l ${compute_path} > /mnt/work/sourcefilteredfileslist.txt
 # aggregating all files
 ls -l ${output_path} > ${output_path}/processedfilelist.txt
 cp /mnt/work/sourcefilteredfileslist.txt ${output_path}
-cp /mnt/processingInfo.log ${output_path}
 
 # creating and copying results do not carry forward blast_tab and dataframe files
 sudo mkdir -p "${result_path}"
 sudo chmod 777 "${result_path}"
-rsync -v --exclude '*.blast_tab' --exclude '*.dataframe' --exclude '*.delta' --exclude '*.mgaps' --exclude '*.ntref' "${output_path}" "${result_path}"
+sudo rsync -av --exclude '*.fasta' --exclude '*.blast_tab' --exclude '*.dataframe' --exclude '*.delta' --exclude '*.mgaps' --exclude '*.ntref' "${output_path}" "${result_path}"
+cat /mnt/processingInfo.log > "${result_path}/${time_stamp}/processingInfo.log"
