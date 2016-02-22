@@ -145,5 +145,5 @@ cp /mnt/work/sourcefilteredfileslist.txt ${output_path}
 # creating and copying results do not carry forward blast_tab and dataframe files
 sudo mkdir -p "${result_path}"
 sudo chmod 777 "${result_path}"
-sudo rsync -av --exclude '*.fasta' --exclude '*.blast_tab' --exclude '*.dataframe' --exclude '*.delta' --exclude '*.mgaps' --exclude '*.ntref' "${output_path}" "${result_path}"
+sudo rsync -av --exclude '*.fasta' --exclude '*.blast_tab' --exclude '*.dataframe' --exclude '*.delta' --exclude '*.mgaps' --exclude '*.ntref' --exclude '*.nin' --exclude '*.nhr' --exclude '*.nsq' "${output_path}" "${result_path}"
 cat /mnt/processingInfo.log > "${result_path}/${time_stamp}/processingInfo.log"
